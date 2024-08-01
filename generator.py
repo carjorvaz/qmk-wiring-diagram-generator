@@ -50,7 +50,9 @@ def parse_json():
 
 def extract_default_layout(data: dict) -> dict:
     keys = defaultdict(dict)
-    for key in data["layouts"]["LAYOUT"]["layout"]:
+    layout = data["layouts"][next(iter(data["layouts"]))]["layout"]
+
+    for key in layout:
         y = math.floor(key["y"])
         x = math.floor(key["x"])
         keys[y][x] = key["matrix"]
