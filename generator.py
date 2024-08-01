@@ -8,6 +8,7 @@ import urllib.parse
 
 from collections import defaultdict
 
+
 def read_json_from_local_path(file_path: str) -> dict:
     with open(file_path) as f:
         file_contents = f.read()
@@ -21,10 +22,19 @@ def read_json_from_qmk_path(qmk_path: str) -> dict:
 
 
 def parse_json():
-    parser = argparse.ArgumentParser(description="Generate a wiring diagram from qmk keyboard.json.")
+    parser = argparse.ArgumentParser(
+        description="Generate a wiring diagram from qmk keyboard.json."
+    )
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("-f", type=str, help="Path to local keyboard.json file.", dest="file_path")
-    group.add_argument("-p", type=str, help="Path to keyboard in upstream qmk repo. (e.g.: handwired/dactyl_manuform/4x5)", dest="qmk_path")
+    group.add_argument(
+        "-f", type=str, help="Path to local keyboard.json file.", dest="file_path"
+    )
+    group.add_argument(
+        "-p",
+        type=str,
+        help="Path to keyboard in upstream qmk repo. (e.g.: handwired/dactyl_manuform/4x5)",
+        dest="qmk_path",
+    )
 
     args = parser.parse_args()
     if not any([args.qmk_path, args.file_path]):
@@ -52,7 +62,7 @@ def extract_pins(data: dict) -> dict:
     return data["matrix_pins"]
 
 
-def extract_pin(row_dict: dict, matrix_pins:dict, col:int, kind: str) -> str:
+def extract_pin(row_dict: dict, matrix_pins: dict, col: int, kind: str) -> str:
     if kind == "row":
         i = 0
     elif kind == "col":
@@ -105,7 +115,7 @@ def translate_pin(pin: str) -> str:
         "F5": "A2",
         "F4": "A3",
         "B0": "LED pin (left of crystal)",
-        "D5": "LED pin (right of crystal)"
+        "D5": "LED pin (right of crystal)",
     }
 
     return pin_translation[pin]
@@ -171,6 +181,7 @@ def max_key_width(keys):
             max_width = max(len(str(key_coords)), max_width)
 
     return max_width
+
 
 data = parse_json()
 
